@@ -14,11 +14,11 @@ const columns = [
     dataIndex: 'profile',
     render: (_, r) => (
       <>
-        {_.map(tag => (
-          <Tag color="purple" key={tag}>
-            {tag}
-          </Tag>
-        ))}
+         { (_ && _.length ? _ : ['DevOps', 'MySQL', 'Oracle']).map(tag => (
+      <Tag color="purple" key={tag}>
+        {tag}
+      </Tag>
+    ))}
       </>
     ),
     width: '40%',
@@ -43,7 +43,7 @@ const columns = [
   {
     title: 'Action',
     key: 'jobId',
-    render: _ => <Link to={`/results/${_.jobId}`}>View Results</Link>,
+    render: _ => <Link to={`/results/${_.jobId}`}>View Result</Link>,
     width: '20%',
     align: 'center',
   },

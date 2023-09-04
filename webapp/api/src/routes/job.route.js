@@ -4,15 +4,18 @@ import {
   getAllJobs,
   getJobById,
   getJobResultsById,
+  updateJob
 } from '../controllers/job.controller';
+import { passportJWT } from '../middlewares/passportJWT';
 const router = express.Router();
 
-router.get('/', getAllJobs);
+router.get('/', passportJWT, getAllJobs);
 
-router.get('/:jobId/results', getJobResultsById);
+router.get('/:jobId/results', passportJWT, getJobResultsById);
 
-router.get('/:jobId', getJobById);
+router.get('/:jobId', passportJWT, getJobById);
 
-router.post('/', createJob);
+router.post('/', passportJWT, createJob);
+router.post('/updatejob', updateJob);
 
 export default router;

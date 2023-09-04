@@ -76,7 +76,7 @@ const CSteps: React.FC<ICSteps> = ({ steps }) => {
         )}
         {current === steps.length - 1 && (
           <Button loading={loading} disabled={loading} type="primary" onClick={handleFinalAction}>
-            View Results
+            Publish Job
           </Button>
         )}
         {current > 0 && (

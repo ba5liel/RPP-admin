@@ -1,6 +1,5 @@
 import Job from '../models/Job';
 import httpStatus from 'http-status-codes';
-import getNLPResults from '../services/getNLPResults';
 
 /**
  * @desc    To get all the jobs created by a user
@@ -74,32 +73,42 @@ export const getJobResultsById = async (req, res) => {
   const jobId = req.params.jobId;
   try {
     const job = await Job.findOne({ _id: jobId });
-    if (!job) {
+    if (!job)
       return res
         .status(httpStatus.NOT_FOUND)
         .json({ error: `No job exists with JobId:${jobId} in our records` });
-    }
-    // if resumes are already processed then return results array
-    if (job.processed) {
-      return res.status(httpStatus.OK).json({ data: job.results });
-    }
 
-    const payload = {
-      jd: job.jd,
-      profile: job.profile,
-      tags: job.tags,
-      resumes: job.resumes,
-      userId: req.user._id,
-    };
+    return res.status(httpStatus.OK).json({ data: job.results });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ error: 'something went wrong getting job' });
+  }
+};
 
-    let error = null;
-    const results = await getNLPResults(payload, err => (error = err.message));
-    console.log(error);
-    if (error) {
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error });
+/**
+ * @desc    To get job info by Id
+ * @route   GET /api/jobs/:jobId/results
+ * @access  private
+ */
+export const updateJob = async (req, res) => {
+  const JobId = req.body.job_session;
+  try {
+    const job = await Job.findOne({ _id: JobId });
+    if (!job) {
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ error: `No job exists with JobId:${JobId} in our records` });
     }
-    job.results = results;
-    job.processed = true;
+    // // if resumes are already processed then return results array
+
+    if (job.results) {
+      job.results.push(req.body)
+    }
+    else {
+      job.results = [req.body]
+    }
     // save the results
     await job.save();
 

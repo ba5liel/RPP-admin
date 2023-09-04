@@ -13,7 +13,7 @@ router.use('/auth', authRoutes);
 
 router.use('/upload', passportJWT, uploadRoutes);
 
-router.use('/jobs', passportJWT, jobRoutes);
+router.use('/jobs', jobRoutes);
 
 router.use('/pdf',passportJWT, pdfRoutes);
 

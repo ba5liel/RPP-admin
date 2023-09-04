@@ -11,12 +11,12 @@ export const UploadFileAction = async () => {
   const payload = {
     jt,
     jd,
-    resumes,
+    resumes: [],
     tags,
     profile,
   };
   const { id } = await store.dispatch(createJob(payload));
   return {
-    location: `/results/${id}`,
+    location: `/result`,
   };
 };
